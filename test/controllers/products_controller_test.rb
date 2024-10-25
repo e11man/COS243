@@ -73,3 +73,21 @@ class ProductTest < ActiveSupport::TestCase
   end
 end
 
+class ProductsControllerTest < ActionDispatch::IntegrationTest
+  test "can't delete product in cart" do
+    assert_difference('Product.count', 0) do
+      delete product_path(products(:two))
+    end
+
+    assert_redirected_to products_path
+  end
+
+  test "should destroy product" do
+    assert_difference('Product.count', -1) do
+      delete product_path(products(:ruby))
+    end
+
+    assert_redirected_to products_path
+  end
+end
+
