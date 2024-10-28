@@ -3,6 +3,7 @@ require "test_helper"
 class LineItemsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @line_item = line_items(:one)
+    @product = products(:ruby) # assuming a fixture named 'ruby' exists in products.yml
   end
 
   test "should get index" do
@@ -17,10 +18,12 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create line_item" do
     assert_difference("LineItem.count") do
-      post line_items_url, params: { line_item: { cart_id: @line_item.cart_id, product_id: @line_item.product_id } }
+      post line_items_url, params: { product_id: @product.id }
     end
 
-    assert_redirected_to line_item_url(LineItem.last)
+    follow_redirect!
+    assert_select 'h2', 'Your Pragmatic Cart'
+    assert_select 'li', @product.title
   end
 
   test "should show line_item" do
@@ -46,3 +49,4 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to line_items_url
   end
 end
+
