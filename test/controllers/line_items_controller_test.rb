@@ -22,8 +22,13 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     follow_redirect!
+<<<<<<< HEAD
     assert_select 'h2', 'Your Cart'  # Updated to match the actual text in your view
     assert_select 'li', "1 \u00D7 Programming Ruby 1.9"  # Ensure this matches your product title
+=======
+    assert_select 'h2', 'Your Pragmatic Cart'
+    assert_select 'li', @product.title
+>>>>>>> parent of 15ac0d3 (wokring throuhg E1)
   end
 
   test "should show line_item" do

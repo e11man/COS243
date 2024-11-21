@@ -9,6 +9,7 @@
 class Cart < ApplicationRecord
   has_many :line_items, dependent: :destroy
 
+<<<<<<< HEAD
   # Adds a product to the cart
   def add_product(product)
     # Find the line item with the specified product
@@ -28,5 +29,6 @@ class Cart < ApplicationRecord
   def total_price
     line_items.to_a.sum { |item| item.total_price }
   end
+=======
+>>>>>>> parent of 15ac0d3 (wokring throuhg E1)
 end
-
