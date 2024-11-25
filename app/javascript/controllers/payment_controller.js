@@ -4,22 +4,27 @@ export default class extends Controller {
   static targets = [ "selection", "additionalFields" ]
   
   initialize() {
-    this.showAdditionalFields()
+    this.hideFields()
   }
   
-  showAdditionalFields() {
-    let selection = this.selectionTarget.value
-
-    for (let fields of this.additionalFieldsTargets) {
-      fields.disabled = fields.hidden = (fields.dataset.type != selection)
-    }
-
-    // Enable/disable all input fields within the selected fieldset
-    this.additionalFieldsTargets.forEach((fieldset) => {
-      const inputs = fieldset.querySelectorAll('input')
-      inputs.forEach((input) => {
-        input.disabled = fieldset.hidden
-      })
+  hideFields() {
+    this.additionalFieldsTargets.forEach(element => {
+      element.hidden = true
     })
+  }
+
+  showAdditionalFields() {
+    this.hideFields()
+    const selectedPayType = this.selectionTarget.value
+
+    if (selectedPayType != "") {
+      const selectedFields = this.additionalFieldsTargets.find(
+        element => element.dataset.type == selectedPayType
+      )
+
+      if (selectedFields) {
+        selectedFields.hidden = false
+      }
+    }
   }
 }
