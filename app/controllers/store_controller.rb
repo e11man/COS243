@@ -1,6 +1,8 @@
 class StoreController < ApplicationController
+  include CurrentCart
+  before_action :set_cart
+  
   def index
-    @products = Product.order(:title) # Assuming your Product model has a `title` attribute
+    @products = Product.order(:title)
   end
 end
-

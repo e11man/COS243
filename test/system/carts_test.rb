@@ -17,7 +17,6 @@ class CartsTest < ApplicationSystemTestCase
     click_on "Create Cart"
 
     assert_text "Cart was successfully created"
-    click_on "Back"
   end
 
   test "should update Cart" do
@@ -27,11 +26,13 @@ class CartsTest < ApplicationSystemTestCase
     click_on "Update Cart"
 
     assert_text "Cart was successfully updated"
-    click_on "Back"
   end
 
   test "should destroy Cart" do
-    visit cart_url(@cart)
+    visit store_index_url
+    click_on "Add to Cart", match: :first
+
+    visit cart_url(Cart.last)
     click_on "Destroy this cart", match: :first
 
     assert_text "Cart was successfully destroyed"

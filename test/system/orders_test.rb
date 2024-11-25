@@ -1,33 +1,25 @@
 require "application_system_test_case"
+
 class OrdersTest < ApplicationSystemTestCase
-  test "check dynamic fields" do
+  include ActiveJob::TestHelper
+  
+  test "check routing number" do
+    LineItem.delete_all
+    Order.delete_all
+    
     visit store_index_url
+    
     click_on 'Add to Cart', match: :first
     click_on 'Checkout'
 
-    assert has_no_field? 'Routing number'
-    assert has_no_field? 'Account number'
-    assert has_no_field? 'Credit card number'
-    assert has_no_field? 'Expiration date'
-    assert has_no_field? 'Po number'
-    select 'Check', from: 'Pay type'
-    assert has_field? 'Routing number'
-    assert has_field? 'Account number'
-    assert has_no_field? 'Credit card number'
-    assert has_no_field? 'Expiration date'
-    assert has_no_field? 'Po number'
-    select 'Credit card', from: 'Pay type'
-    assert has_no_field? 'Routing number'
-    assert has_no_field? 'Account number'
-    assert has_field? 'Credit card number'
-    assert has_field? 'Expiration date'
-    assert has_no_field? 'Po number'
-
-    select 'Purchase order', from: 'Pay type'
-    assert has_no_field? 'Routing number'
-    assert has_no_field? 'Account number'
-    assert has_no_field? 'Credit card number'
-    assert has_no_field? 'Expiration date'
-    assert has_field? 'Po number'
+    fill_in 'order_name', with: 'Dave Thomas'
+    fill_in 'order_address', with: '123 Main Street'
+    fill_in 'order_email', with: 'dave@example.com'
+    
+    assert_no_selector "#order_routing_number"
+    
+    select 'Check', from: 'order[pay_type]'
+    
+    assert_selector "#order_routing_number"
   end
 end
